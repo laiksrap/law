@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>MALGER GROUP — Бесплатный аудит онлайн-бизнеса</title>
+  <meta name="description" content="Оцените юридические риски онлайн-бизнеса за 1 минуту и получите бесплатный аудит от MALGER GROUP." />
+  <style>
+    :root{
+      --bg:#0b1430;            /* тёмно-синий фон */
+      --card:#111a3d;          /* тёмная карточка */
+      --text:#e9eefc;          /* светлый текст */
+      --muted:#9fb3ff;         /* приглушённый */
+      --accent:#ff6a3d;        /* акцент (оранжево-красный) */
+      --accent-2:#ffd166;      /* второй акцент */
+      --ok:#30d158;
+      --warn:#ffd166;
+      --bad:#ff453a;
+      --shadow:0 10px 30px rgba(0,0,0,.35);
+      --radius:20px;
+      --radius-sm:12px;
+      --gap:18px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; font-family: ui-sans-serif, -apple-system, Segoe UI, Roboto, Inter, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji","Segoe UI Emoji";
+      color:var(--text); background: radial-gradient(1200px 800px at 80% -10%, #2a3a90 0%, transparent 60%), var(--bg);
+      overflow-x:hidden;
+    }
+    a{color:var(--accent); text-decoration:none}
+    .container{width:min(1120px, 92vw); margin:0 auto}
+    /* ---------- Header ---------- */
+    header{
+      position:sticky; top:0; z-index:50; backdrop-filter: blur(10px);
+      background: linear-gradient(180deg, rgba(11,20,48,.8), rgba(11,20,48,.35));
+      border-bottom:1px solid rgba(255,255,255,.06);
+    }
+    .nav{
+      display:flex; align-items:center; justify-content:space-between;
+      padding:14px 0;
+    }
+    .brand{
+      display:flex; align-items:center; gap:12px; font-weight:800; letter-spacing:.4px;
+    }
+    .brand .logo{
+      width:34px; height:34px; border-radius:10px; background:linear-gradient(135deg,var(--accent),#ff2e74);
+      display:grid; place-items:center; box-shadow: var(--shadow);
+    }
+    .brand .logo svg{width:18px; height:18px; fill:white}
+    .cta{
+      display:inline-grid; place-items:center; padding:12px 18px; border-radius:999px; font-weight:700;
+      background:linear-gradient(90deg,var(--accent),#ff2e74); color:white; box-shadow:0 6px 18px rgba(255,106,61,.35);
+      transition:transform .15s ease, filter .2s ease; will-change: transform;
+    }
+    .cta:hover{transform:translateY(-1px); filter:saturate(1.1)}
+    .ghost{background:transparent; border:1px solid rgba(255,255,255,.18); color:var(--text)}
+    .row{display:flex; gap:22px; flex-wrap:wrap}
+    /* ---------- Hero ---------- */
+    .hero{position:relative; padding:72px 0 54px}
+    canvas#fx{position:absolute; inset:0; z-index:-1}
+    .hero-grid{display:grid; grid-template-columns: 1.2fr .8fr; gap:28px; align-items:center}
+    .headline{
+      font-size: clamp(28px, 5vw, 48px); line-height:1.05; font-weight:900;
+      letter-spacing:.2px; margin:0 0 12px;
+      background: linear-gradient(180deg, #ffffff, #bcd1ff); -webkit-background-clip:text; background-clip:text; color:transparent;
+    }
+    .sub{color:var(--muted); font-size: clamp(16px, 2.2vw, 18px); margin:0 0 20px}
+    .badge{
+      display:inline-flex; align-items:center; gap:10px; padding:8px 12px; border-radius:999px;
+      background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12); color:#d8e1ff; font-weight:600; margin-bottom:12px;
+    }
+    .metric{
+      display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:20px;
+    }
+    .metric .m{
+      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02)); border:1px solid rgba(255,255,255,.08);
+      border-radius:16px; padding:14px; text-align:center;
+    }
+    .metric .m .big{font-size:22px; font-weight:900}
+    .metric .m .cap{font-size:12px; opacity:.75}
+    .card{
+      background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04)); border:1px solid rgba(255,255,255,.12);
+      border-radius:var(--radius); padding:18px; box-shadow: var(--shadow); position:relative; overflow:hidden;
+      transform-style: preserve-3d; transition: transform .12s ease;
+    }
+    .tilt:hover{transform: perspective(800px) rotateX(2.5deg) rotateY(-2.5deg) translateZ(0)}
+    .risk{
+      display:grid; gap:12px;
+    }
+    .slider-wrap{display:grid; gap:6px}
+    input[type=range]{width:100%}
+    .risk-chip{
+      display:flex; justify-content:space-between; font-size:14px; color:var(--muted)
+    }
+    .risk-bar{
+      height:10px; border-radius:999px; overflow:hidden; background:rgba(255,255,255,.1)
+    }
+    .risk-fill{
+      height:100%; width:20%; background:linear-gradient(90deg, var(--ok), var(--warn), var(--bad));
+      filter:saturate(1.2) contrast(1.1); transition:width .2s ease;
+    }
+    .btns{display:flex; gap:12px; flex-wrap:wrap; margin-top:12px}
+    /* ---------- Benefits ---------- */
+    section{padding:64px 0}
+    .grid-3{display:grid; grid-template-columns:repeat(3,1fr); gap:18px}
+    .mini{font-size:13px; color:var(--muted)}
+    .b-ico{width:40px; height:40px; border-radius:10px; display:grid; place-items:center; background:rgba(255,255,255,.08); margin-bottom:8px}
+    .b-ico svg{width:20px; height:20px; fill:var(--accent)}
+    /* ---------- Pricing ---------- */
+    .pricing{display:grid; grid-template-columns:repeat(3,1fr); gap:18px}
+    .price .tag{font-size:13px; color:var(--muted)}
+    .price .p{font-size:28px; font-weight:900}
+    .ul{display:grid; gap:10px; margin-top:12px}
+    .ul li{list-style:none; display:flex; align-items:flex-start; gap:10px}
+    .ul li:before{content:"✔"; color:var(--ok); margin-top:1px}
+    /* ---------- Carousel ---------- */
+    .carousel{position:relative; overflow:hidden; border-radius:var(--radius); border:1px solid rgba(255,255,255,.1)}
+    .track{display:flex; transition:transform .45s ease}
+    .slide{min-width:100%; padding:22px; background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02))}
+    .dots{display:flex; gap:8px; justify-content:center; margin-top:10px}
+    .dot{width:8px; height:8px; border-radius:50%; background:rgba(255,255,255,.25); cursor:pointer}
+    .dot.active{background:var(--accent)}
+    /* ---------- FAQ ---------- */
+    .faq{display:grid; gap:10px}
+    details{
+      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02)); border:1px solid rgba(255,255,255,.12);
+      padding:14px 16px; border-radius:14px
+    }
+    summary{cursor:pointer; font-weight:700}
+    details[open]{border-color:rgba(255,255,255,.22)}
+    /* ---------- Footer & Sticky ---------- */
+    footer{padding:36px 0; color:var(--muted); font-size:14px}
+    .sticky-cta{
+      position:fixed; right:16px; bottom:16px; z-index:60;
+      background:linear-gradient(90deg,var(--accent),#ff2e74); color:white; border:none; border-radius:999px;
+      padding:14px 18px; font-weight:900; box-shadow:0 10px 28px rgba(255,106,61,.35); cursor:pointer
+    }
+    .sticky-cta:hover{transform:translateY(-1px)}
+    /* ---------- Responsive ---------- */
+    @media (max-width: 900px){
+      .hero-grid{grid-template-columns:1fr}
+      .metric{grid-template-columns:1fr 1fr 1fr}
+      .grid-3{grid-template-columns:1fr}
+      .pricing{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <div class="brand">
+        <div class="logo" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M3 12l5-9h8l5 9-5 9H8l-5-9zm9-6l4 6-4 6-4-6 4-6z"/></svg>
+        </div>
+        <div>MALGER GROUP</div>
+      </div>
+      <nav class="row">
+        <a class="cta ghost" href="#pricing">Тарифы</a>
+        <a class="cta" target="_blank" rel="noopener" href="https://forms.yandex.ru/cloud/68c82ab7068ff0296b194536">
+          Пройти бесплатный аудит
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <canvas id="fx"></canvas>
+    <div class="container hero-grid">
+      <div>
+        <div class="badge">Онлайн-бизнес под ударом: штрафы до 500 000 ₽</div>
+        <h1 class="headline">Пройдите 1-минутный тест и узнайте свой юридический риск по шкале 1–10</h1>
+        <p class="sub">95–98% предпринимателей допускают нарушения: нет политики конфиденциальности, кнопки согласия, ERID-токенов, регистрации блогера. Мы приводим всё в порядок за пару дней и сопровождаем при проверках.</p>
+
+        <div class="row">
+          <a class="cta" target="_blank" rel="noopener" href="https://forms.yandex.ru/cloud/68c82ab7068ff0296b194536">Пройти тест →</a>
+          <a class="cta ghost" href="#faq">Что входит и как это работает?</a>
+        </div>
+
+        <div class="metric">
+          <div class="m">
+            <div class="big">4 209</div>
+            <div class="cap">дел ФАС по рекламе в 2024</div>
+          </div>
+          <div class="m">
+            <div class="big">710M+</div>
+            <div class="cap">утекших записей ПДн в 2024</div>
+          </div>
+          <div class="m">
+            <div class="big">15 млн ₽</div>
+            <div class="cap">максимум штрафов за ПДн с 2025</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card tilt">
+        <h3 style="margin:0 0 10px">Быстрая оценка риска</h3>
+        <p class="mini">Сдвиньте ползунок и увидите подсказку. Для точного результата — пройдите тест (1 мин).</p>
+        <div class="risk">
+          <div class="slider-wrap">
+            <input id="riskRange" type="range" min="1" max="10" step="1" value="3" aria-label="Оценка риска" />
+            <div class="risk-chip">
+              <span>Ваш риск: <b id="riskVal">3/10</b></span>
+              <span id="riskHint">Низкий риск. Но базовые документы всё равно нужны.</span>
+            </div>
+            <div class="risk-bar"><div id="riskFill" class="risk-fill"></div></div>
+          </div>
+          <div class="btns">
+            <a class="cta" target="_blank" rel="noopener" href="https://forms.yandex.ru/cloud/68c82ab7068ff0296b194536">Получить бесплатный аудит</a>
+            <a class="cta ghost" href="#pricing">Смотреть тарифы</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="why">
+    <div class="container">
+      <h2 id="why" class="headline" style="font-size:32px">Почему важно сделать «юридический техосмотр» сейчас</h2>
+      <p class="sub">Штрафы получают не только крупные компании. Проверки касаются каждого: блогеров, онлайн-школ, специалистов, студий, сервисов и даже небольших магазинов.</p>
+      <div class="grid-3">
+        <div class="card tilt">
+          <div class="b-ico"><svg viewBox="0 0 24 24"><path d="M12 2l4 8h8l-6 5 2 9-8-5-8 5 2-9-6-5h8z"/></svg></div>
+          <b>Маркировка рекламы</b>
+          <p class="mini">За пост без ERID-токена штрафуют. Мы настраиваем процесс и договоры с ролями (рекламодатель/агент/распространитель).</p>
+        </div>
+        <div class="card tilt">
+          <div class="b-ico"><svg viewBox="0 0 24 24"><path d="M4 6h16v12H4zM2 8l10 6 10-6"/></svg></div>
+          <b>Персональные данные</b>
+          <p class="mini">Политика ПДн, cookies, отдельная кнопка согласия, уведомление в РКН, договоры обработки — сделаем под ключ.</p>
+        </div>
+        <div class="card tilt">
+          <div class="b-ico"><svg viewBox="0 0 24 24"><path d="M12 3l9 6-9 6-9-6 9-6zm0 14l9-6v7l-9 6-9-6v-7l9 6z"/></svg></div>
+          <b>Авторское право</b>
+          <p class="mini">Оформим права на курс/контент, договоры со спикерами и подрядчиками, чтобы не потерять активы.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="pricing" aria-labelledby="plans">
+    <div class="container">
+      <h2 id="plans" class="headline" style="font-size:32px">Тарифы</h2>
+      <div class="pricing">
+        <div class="card price tilt">
+          <div class="tag">Стартовый пакет</div>
+          <div class="p">15 000 ₽</div>
+          <ul class="ul">
+            <li>Политика конфиденциальности + cookies</li>
+            <li>Отдельная кнопка согласия во всех формах</li>
+            <li>Базовая оферта/договор</li>
+          </ul>
+          <div class="btns">
+            <a class="cta" target="_blank" rel="noopener" href="https://forms.yandex.ru/cloud/68c82ab7068ff0296b194536">Заказать аудит</a>
+          </div>
+        </div>
+        <div class="card price tilt" style="outline:2px solid rgba(255,255,255,.14)">
+          <div class="tag">Полный пакет «под ключ»</div>
+          <div class="p">60 000 ₽</div>
+          <ul class="ul">
+            <li>Все документы для сайта/соцсетей</li>
+            <li>ERID/договоры с правильными ролями</li>
+            <li>Подача уведомления в РКН, чек-лист внедрения</li>
+          </ul>
+          <div class="btns">
+            <a class="cta" target="_blank" rel="noopener" href="https://forms.yandex.ru/cloud/68c82ab7068ff0296b194536">Оставить заявку</a>
+          </div>
+        </div>
+        <div class="card price tilt">
+          <div class="tag">Сопровождение</div>
+          <div class="p">120 000 ₽ / 3 мес</div>
+          <ul class="ul">
+            <li>Ответы ФАС/РКН и подготовка к проверкам</li>
+            <li>Проверка креативов/интеграций до публикации</li>
+            <li>Личная «горячая линия»</li>
+          </ul>
+          <div class="btns">
+            <a class="cta" target="_blank" rel="noopener" href="https://forms.yandex.ru/cloud/68c82ab7068ff0296b194536">Подключить</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="cases">
+    <div class="container">
+      <h2 id="cases" class="headline" style="font-size:32px">Кейсы и отзывы</h2>
+      <div class="carousel" id="carousel">
+        <div class="track" id="track">
+          <div class="slide">
+            <b>Онлайн-школа маркетинга</b>
+            <p class="mini">За неделю оформили ПДн, ERID, договоры под запуски. Клиент избежал претензий и увеличил оборот на 18% за квартал.</p>
+          </div>
+          <div class="slide">
+            <b>Блогер 250k+</b>
+            <p class="mini">Подключили реестр блогеров, навели порядок с маркировкой рекламы. Ноль штрафов, прозрачные условия для рекламодателей.</p>
+          </div>
+          <div class="slide">
+            <b>Студия продакшена</b>
+            <p class="mini">Оформили права на курсы и исходники. Закрыли риски с подрядчиками и стоками музыки. Проекты стали юридически «чистыми».</p>
+          </div>
+        </div>
+      </div>
+      <div class="dots" id="dots" aria-label="Пагинация слайдеров"></div>
+    </div>
+  </section>
+
+  <section id="faq" aria-labelledby="faqh">
+    <div class="container">
+      <h2 id="faqh" class="headline" style="font-size:32px">Частые вопросы</h2>
+      <div class="faq">
+        <details>
+          <summary>У меня маленький блог — правда ли меня это касается?</summary>
+          <p class="mini">Да. Требования по ПДн и договорам касаются всех. Порог 10k важен только для реестра блогеров.</p>
+        </details>
+        <details>
+          <summary>Сколько занимает «привести в порядок»?</summary>
+          <p class="mini">Обычно 2–5 рабочих дней: аудит → документы → внедрение кнопок и текстов.</p>
+        </details>
+        <details>
+          <summary>А если уже пришла претензия?</summary>
+          <p class="mini">Разберёмся с ответом, устраним нарушения и подготовим доказательства. Чем быстрее обратитесь, тем лучше.</p>
+        </details>
+      </div>
+      <div class="btns" style="margin-top:18px">
+        <a class="cta" target="_blank" rel="noopener" href="https://forms.yandex.ru/cloud/68c82ab7068ff0296b194536">Пройти бесплатный аудит</a>
+        <a class="cta ghost" href="#pricing">Сравнить пакеты</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container row" style="justify-content:space-between">
+      <div>© MALGER GROUP, 2025 • Юридическая поддержка онлайн-бизнеса</div>
+      <div class="mini">Контакты: <a href="mailto:hello@malger.group">hello@malger.group</a> • <a href="#"
+        onclick="alert('Добавьте ваш Telegram/WhatsApp ссылку');return false;">Telegram/WhatsApp</a></div>
+    </div>
+  </footer>
+
+  <button class="sticky-cta" onclick="window.open('https://forms.yandex.ru/cloud/68c82ab7068ff0296b194536','_blank','noopener')">
+    Пройти тест за 1 минуту
+  </button>
+
+  <script>
+    // ---------- Animated particles background ----------
+    (function(){
+      const c = document.getElementById('fx');
+      const ctx = c.getContext('2d');
+      let w,h,particles=[];
+      const N=80;
+      function resize(){ w=c.width=window.innerWidth; h=c.height=window.innerHeight*.66; }
+      function rnd(a,b){return a+Math.random()*(b-a)}
+      function init(){
+        particles=[];
+        for(let i=0;i<N;i++){
+          particles.push({
+            x:rnd(0,w), y:rnd(0,h),
+            vx:rnd(-.3,.3), vy:rnd(-.3,.3),
+            r:rnd(1.2,2.6), a:rnd(.2,.9)
+          });
+        }
+      }
+      function step(){
+        ctx.clearRect(0,0,w,h);
+        // glow grid
+        const grad=ctx.createLinearGradient(0,0,w,h);
+        grad.addColorStop(0,'rgba(47,71,187,.15)');
+        grad.addColorStop(1,'rgba(255,106,61,.08)');
+        ctx.fillStyle=grad; ctx.fillRect(0,0,w,h);
+        // particles
+        for(const p of particles){
+          p.x+=p.vx; p.y+=p.vy;
+          if(p.x<0||p.x>w) p.vx*=-1;
+          if(p.y<0||p.y>h) p.vy*=-1;
+          ctx.beginPath();
+          ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+          ctx.fillStyle=`rgba(159,179,255,${p.a})`;
+          ctx.fill();
+        }
+        // links
+        for(let i=0;i<particles.length;i++){
+          for(let j=i+1;j<particles.length;j++){
+            const a=particles[i], b=particles[j];
+            const dx=a.x-b.x, dy=a.y-b.y, d=Math.hypot(dx,dy);
+            if(d<100){
+              ctx.strokeStyle=`rgba(255,255,255,${.05*(1-d/100)})`;
+              ctx.lineWidth=1;
+              ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
+            }
+          }
+        }
+        requestAnimationFrame(step);
+      }
+      window.addEventListener('resize', ()=>{resize(); init();});
+      resize(); init(); step();
+    })();
+
+    // ---------- Risk slider logic ----------
+    (function(){
+      const r=document.getElementById('riskRange');
+      const val=document.getElementById('riskVal');
+      const hint=document.getElementById('riskHint');
+      const fill=document.getElementById('riskFill');
+      function update(){
+        val.textContent = r.value+'/10';
+        fill.style.width = (r.value*10)+'%';
+        let msg='Низкий риск. Но базовые документы всё равно нужны.';
+        if(r.value>=4 && r.value<=6) msg='Средний риск. Сделайте пакет документов и настройте ERID.';
+        if(r.value>=7 && r.value<=8) msg='Повышенный риск. Нужен аудит и исправление ошибок на сайте/в соцсетях.';
+        if(r.value>=9) msg='Высокий риск. Рекомендуем полный пакет и сопровождение.';
+        hint.textContent = msg;
+      }
+      r.addEventListener('input', update); update();
+    })();
+
+    // ---------- Simple carousel ----------
+    (function(){
+      const track=document.getElementById('track');
+      const slides=[...track.children];
+      const dotsWrap=document.getElementById('dots');
+      let idx=0, timer=null;
+      function go(i){
+        idx=(i+slides.length)%slides.length;
+        track.style.transform=`translateX(-${idx*100}%)`;
+        [...dotsWrap.children].forEach((d,k)=>d.classList.toggle('active',k===idx));
+      }
+      slides.forEach((_,i)=>{
+        const d=document.createElement('div'); d.className='dot'+(i===0?' active':'');
+        d.onclick=()=>{go(i); resetAuto();}; dotsWrap.appendChild(d);
+      });
+      function auto(){ timer=setInterval(()=>go(idx+1), 5000); }
+      function resetAuto(){ clearInterval(timer); auto(); }
+      auto();
+    })();
+
+    // ---------- Subtle 3D tilt on mouse ----------
+    (function(){
+      document.querySelectorAll('.tilt').forEach(card=>{
+        card.addEventListener('mousemove', (e)=>{
+          const r=card.getBoundingClientRect();
+          const x=((e.clientX - r.left)/r.width - .5)*10;
+          const y=((e.clientY - r.top)/r.height - .5)*-10;
+          card.style.transform=`perspective(800px) rotateX(${y}deg) rotateY(${x}deg)`;
+        });
+        card.addEventListener('mouseleave', ()=>card.style.transform='');
+      });
+    })();
+  </script>
+</body>
+</html>
